@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Threading;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 
 namespace selenium_exercises
 {
@@ -6,7 +9,15 @@ namespace selenium_exercises
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            IWebDriver driver = new ChromeDriver();
+
+            var Url = "http://testing.todorvachev.com";
+
+            driver.Navigate().GoToUrl(Url);
+
+            Thread.Sleep(3000);
+
+            driver.Quit();
         }
     }
 }
