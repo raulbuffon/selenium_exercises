@@ -11,67 +11,79 @@ namespace selenium_exercises
         {
             IWebDriver driver = new ChromeDriver();
 
-            var BaseUrl = "http://testing.todorvachev.com";
+            var baseUrl = "http://testing.todorvachev.com";
 
             // Search using Selenium for the element Name
-            driver.Navigate().GoToUrl(BaseUrl + "/selectors/name/");
-
-            IWebElement element = driver.FindElement(By.Name("myName"));
-
-            if(element.Displayed) GreenMessage("I can see the search by Name!");
+            FindByName(baseUrl, driver);
 
             // Search using Selenium for the element Id
-            driver.Navigate().GoToUrl(BaseUrl + "/selectors/id/");
-
-            element = driver.FindElement(By.Id("testImage"));
-
-            if(element.Displayed) GreenMessage("I can see the search by Id!");
+            FindById(baseUrl, driver);
 
             // Search using Selenium for the element Class Name
-            driver.Navigate().GoToUrl(BaseUrl + "/selectors/class-name/");
+            FindByClassName(baseUrl, driver);
 
-            element = driver.FindElement(By.ClassName("testClass"));
+            // Search using Selenium for the element CSS path
+            FindByCssPath(baseUrl, driver);
 
-            if(element.Displayed) GreenMessage($"I can see the search by Class Name! His text is \"{element.Text}\"");
-
-            // Search using Selenium for the element CSS and X path
-            driver.Navigate().GoToUrl(BaseUrl + "/selectors/css-path/");
-
-            var cssPath = "#post-108 > div > figure > img";
-            var xPath = "//*[@id=\"post-108\"]/div/figure/img";
-
-            element = driver.FindElement(By.CssSelector(cssPath));
-            if(element.Displayed) GreenMessage($"I can see the search by Css Path");
-
-            element = driver.FindElement(By.XPath(xPath));
-            if(element.Displayed) GreenMessage($"I can see the search by X Path");
+            // Search using Selenium for the element X path
+            FindByXPath(baseUrl, driver);
             
             // Exception handle if dont find the element in search
-            var wrongXPath = "//*[@id=\"post-1088888\"]/div/figure/img";
-            try
-            {   
-                element = driver.FindElement(By.XPath(wrongXPath));
-                if(element.Displayed) GreenMessage($"I can see the search by X Path");
-            }
-            catch(NoSuchElementException)
-            {
-                RedMessage($"I cannot see the search by X Path, something is wrong here ;-;");
-            }
+            FindHandlingException(baseUrl, driver);
+
             driver.Quit();
         }
 
-        private static void RedMessage(string message)
+        public static void FindByName(string baseUrl, IWebDriver driver)
         {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(message);
-            Console.ForegroundColor = ConsoleColor.White;
+            driver.Navigate().GoToUrl(baseUrl + "/selectors/name/");
+            IWebElement element = driver.FindElement(By.Name("myName"));
+            if(element.Displayed) PrintMessage.Green("I can see the search by Name!");
         }
 
-        private static void GreenMessage(string message)
+        public static void FindById(string baseUrl, IWebDriver driver)
         {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(message);
-            Console.ForegroundColor = ConsoleColor.White;
+            driver.Navigate().GoToUrl(baseUrl + "/selectors/id/");
+            IWebElement element = driver.FindElement(By.Id("testImage"));
+            if(element.Displayed) PrintMessage.Green("I can see the search by Id!");
         }
+
+        public static void FindByClassName(string baseUrl, IWebDriver driver)
+        {
+            driver.Navigate().GoToUrl(baseUrl + "/selectors/class-name/");
+            IWebElement element = driver.FindElement(By.ClassName("testClass"));
+            if(element.Displayed) PrintMessage.Green($"I can see the search by Class Name! His text is \"{element.Text}\"");
+        }
+
+        public static void FindByCssPath(string baseUrl, IWebDriver driver)
+        {
+            var cssPath = "#post-108 > div > figure > img";
+            driver.Navigate().GoToUrl(baseUrl + "/selectors/css-path/");
+            IWebElement element = driver.FindElement(By.CssSelector(cssPath));
+            if(element.Displayed) PrintMessage.Green($"I can see the search by Css Path");
+        }
+
+        public static void FindByXPath(string baseUrl, IWebDriver driver)
+        {
+            var xPath = "//*[@id=\"post-108\"]/div/figure/img";
+            driver.Navigate().GoToUrl(baseUrl + "/selectors/css-path/");
+            IWebElement element = driver.FindElement(By.XPath(xPath));
+            if(element.Displayed) PrintMessage.Green($"I can see the search by X Path");            
+        }
+
+        public static void FindHandlingException(string baseUrl, IWebDriver driver)
+        {
+            var wrongXPath = "//*[@id=\"post-1088888\"]/div/figure/img";
+            driver.Navigate().GoToUrl(baseUrl + "/selectors/css-path/");
+            try
+            {   
+                IWebElement element = driver.FindElement(By.XPath(wrongXPath));
+                if(element.Displayed) PrintMessage.Green($"I can see the search by X Path");
+            }
+            catch(NoSuchElementException)
+            {
+                PrintMessage.Red($"I cannot see the search by X Path, something is wrong here ;-;");
+            }        
+        }         
     }
 }
