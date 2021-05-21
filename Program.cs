@@ -31,6 +31,8 @@ namespace selenium_exercises
             // Exception handle if dont find the element in search
             FindHandlingException(baseUrl, driver);
 
+            HandleTextInputField(baseUrl, driver);
+
             driver.Quit();
         }
 
@@ -83,7 +85,15 @@ namespace selenium_exercises
             catch(NoSuchElementException)
             {
                 PrintMessage.Red($"I cannot see the search by X Path, something is wrong here ;-;");
-            }        
+            }
+        }
+
+        public static void HandleTextInputField(string baseUrl, IWebDriver driver)
+        {
+            driver.Navigate().GoToUrl(baseUrl + "/special-elements/text-input-field/");
+            IWebElement element = driver.FindElement(By.Name("username"));
+            element.SendKeys("Test text");
+            PrintMessage.Green($"The entry is: {element.GetAttribute("value")}");                
         }         
     }
 }
