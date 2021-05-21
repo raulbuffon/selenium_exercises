@@ -33,6 +33,8 @@ namespace selenium_exercises
 
             HandleTextInputField(baseUrl, driver);
 
+            HandleCheckBox(baseUrl, driver);
+
             driver.Quit();
         }
 
@@ -94,6 +96,21 @@ namespace selenium_exercises
             IWebElement element = driver.FindElement(By.Name("username"));
             element.SendKeys("Test text");
             PrintMessage.Green($"The entry is: {element.GetAttribute("value")}");                
-        }         
+        }
+
+        public static void HandleCheckBox(string baseUrl, IWebDriver driver)
+        {
+            driver.Navigate().GoToUrl(baseUrl + "/special-elements/check-button-test-3/");
+            IWebElement element = driver.FindElement(By.CssSelector("#post-33 > div > p:nth-child(8) > input[type=checkbox]:nth-child(1)"));
+            element.Click();
+            if(element.GetAttribute("checked") == "true")
+            {
+                PrintMessage.Green($"The checkbox value is checked: {element.GetAttribute("value")}");
+            }
+            else
+            {
+                PrintMessage.Red($"The checkbox value is unchecked: {element.GetAttribute("value")}");
+            }
+        }
     }
 }
