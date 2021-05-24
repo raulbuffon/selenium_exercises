@@ -3,7 +3,7 @@ using System.Threading;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
-namespace selenium_exercises
+namespace selenium_elements
 {
     class Program
     {
@@ -34,6 +34,10 @@ namespace selenium_exercises
             HandleTextInputField(baseUrl, driver);
 
             HandleCheckBox(baseUrl, driver);
+
+            HandleRadioButton(baseUrl, driver);
+
+            HandleDropDownMenu(baseUrl, driver);
 
             driver.Quit();
         }
@@ -111,6 +115,32 @@ namespace selenium_exercises
             {
                 PrintMessage.Red($"The checkbox value is unchecked: {element.GetAttribute("value")}");
             }
+        }
+
+        public static void HandleRadioButton(string baseUrl, IWebDriver driver)
+        {
+            driver.Navigate().GoToUrl(baseUrl + "/special-elements/radio-button-test/");
+            IWebElement element = driver.FindElement(By.CssSelector("#post-10 > div > form > p:nth-child(6) > input[type=radio]:nth-child(1)"));
+            element.Click();
+            if(element.GetAttribute("checked") == "true")
+            {
+                PrintMessage.Green($"The radio button is checked with value: {element.GetAttribute("value")}");
+            }
+            else
+            {
+                PrintMessage.Red($"The radio button is unchecked with value: {element.GetAttribute("value")}");
+            }
+        }
+
+        public static void HandleDropDownMenu(string baseUrl, IWebDriver driver)
+        {
+            driver.Navigate().GoToUrl(baseUrl + "/special-elements/drop-down-menu-test/");
+            IWebElement elementFromDropDownMenu = driver.FindElement(By.CssSelector("#post-6 > div > p:nth-child(6) > select > option:nth-child(3)"));
+            IWebElement elementSelectedInDropDownMenu = driver.FindElement(By.Name("DropDownTest"));
+            PrintMessage.Green($"The selected value is: {elementSelectedInDropDownMenu.GetAttribute("value")}");
+            PrintMessage.Green($"The third value in drop down menu is: {elementFromDropDownMenu.GetAttribute("value")}");
+            elementFromDropDownMenu.Click();
+            PrintMessage.Green($"The new selected value is: {elementSelectedInDropDownMenu.GetAttribute("value")}");
         }
     }
 }
