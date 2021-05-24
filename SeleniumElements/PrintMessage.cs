@@ -1,6 +1,6 @@
 using System;
 
-namespace selenium_elements
+namespace seleniumElements
 {
     class PrintMessage
     {
